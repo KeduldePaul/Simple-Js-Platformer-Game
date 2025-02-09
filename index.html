@@ -3,17 +3,80 @@
   <head>
     <title>Score</title>
     <style>
-      #cnv {
-        border : 1px solid grey;
+      :root{
+        /* --clra: rgb(176,186,188); */
+        --clra: rgb(19,217,67);
+        --mainbg: rgb(7,12,47);
       }
       
+      body {
+        background-color: var(--mainbg);
+      }
+      
+      * {
+        text-decoration-color: white;
+      }
+      
+      #cnv {
+        border : 1px solid grey;
+        display: none;
+        position: fixed;
+        top: -1px;
+        left: -1px;
+        z-index: 1;
+      }
+      
+      /* #start-btn-container {
+        height : 200px;
+        display: block;
+        border: 3px solid green;
+        position: relative;
+      } */
+      
+      #start-game {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+      
+      button.btn {
+        height : 3em;
+        padding-right: 1em;
+        padding-left: 1em;
+        border: 2px solid var(--clra);
+        background-color: var(--clra);
+        border-radius: 1.5em;
+        color: var(--mainbg);
+        font : 24px Arial;
+        font-weight: bold;
+      }
+      
+      button.btn:hover {
+        background-color: transparent;
+        color:var(--clra);
+      }
+      
+      buttin.btn:active {
+        background-color: var(--clra);
+      }
+            
       .help-links {
         display: block;
+        text-decoration:none;
+        color: white;
       }
     </style>
   </head>
   <body>
     <canvas id='cnv' width='320' height='520'></canvas>
+    <!-- <div id="start-btn-container">
+    </div> -->
+      <div id="start-game">
+        <button class="btn">Start Game</button>
+      </div>
     <a class="help-links" href="https://google.co.id">Google</a>
     <!--<script src="/src/util.js"></script>-->
     <script src="/src/Vec2.js"></script>
