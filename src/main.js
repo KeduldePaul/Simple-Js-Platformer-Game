@@ -38,6 +38,9 @@ function closeGame() {
 function resizeCanvas() {
   cnv.width  = window.innerWidth;
   cnv.height = window.innerHeight;
+
+  width = cnv.width;
+  height = cnv.height;
 }
 
 function goFullScreen() {
