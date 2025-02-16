@@ -1,15 +1,20 @@
 const cnv = document.querySelector('#cnv');
 const ctx = cnv.getContext('2d');
 
+let runningFrame;
+
 const btn = document.querySelector('#start-game button');
 const startContainer = document.querySelector('#start-game');
 
 btn.addEventListener("click", openGame);
 
+const closeGameBtn = document.querySelector('#close');
+closeGameBtn.addEventListener('click', closeGame);
+
 window.addEventListener('resize', resizeCanvas);
 
 function openGame() {
-  cnv.style.display = 'block';
+  document.querySelector('#main').style.display = 'block';
   startContainer.style.display = 'none';
   
   // if (!isFullScreen()) {
@@ -17,9 +22,17 @@ function openGame() {
   // }
   
   resizeCanvas();
+  
   //start the game
   setup();
   animate();
+}
+
+function closeGame() {
+  document.querySelector('#main').style.display = 'none';
+  startContainer.style.display = 'block';
+  
+  cancelAnimationFrame(runningFrame);
 }
 
 function resizeCanvas() {
@@ -95,7 +108,7 @@ function isFullScreen() {
 }
 
 function animate(time) {
-  requestAnimationFrame(animate);
+  runningFrame = requestAnimationFrame(animate);
   
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
