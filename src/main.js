@@ -1,3 +1,5 @@
+const gameContainer = document.querySelector('div#main');
+
 const cnv = document.querySelector('#cnv');
 const ctx = cnv.getContext('2d');
 
@@ -14,13 +16,14 @@ closeGameBtn.addEventListener('click', closeGame);
 window.addEventListener('resize', resizeCanvas);
 
 function openGame() {
-  document.querySelector('#main').style.display = 'block';
+  gameContainer.style.display = 'block';
   startContainer.style.display = 'none';
   
   // if (!isFullScreen()) {
   //   goFullScreen();
   // }
   
+  // goFullScreen();
   resizeCanvas();
   
   //start the game
@@ -29,18 +32,47 @@ function openGame() {
 }
 
 function closeGame() {
-  document.querySelector('#main').style.display = 'none';
+  gameContainer.style.display = 'none';
   startContainer.style.display = 'block';
   
   cancelAnimationFrame(runningFrame);
 }
 
 function resizeCanvas() {
-  cnv.width  = window.innerWidth;
-  cnv.height = window.innerHeight;
-
-  width = cnv.width;
-  height = cnv.height;
+  let WIDTH  = window.innerWidth;
+  let HEIGHT = window.innerHeight;
+  
+  const RATIO = 9 / 16;
+  
+  if (HEIGHT < WIDTH) {
+    WIDTH = HEIGHT * RATIO;
+  } else {
+    HEIGHT = WIDTH / RATIO;
+  }
+  
+  if (HEIGHT > window.innerHeight) {
+    HEIGHT = window.innerHeight;
+    WIDTH = HEIGHT * RATIO;
+  }
+  
+  // Unused, just for game that the wide value is more than it's height eg for ratio 16 / 9.
+  // if (WIDTH > window.innerWidth) {
+  //   WIDTH = window.innerWidth;
+  //   HEIGHT = WIDTH * RATIO;
+  // }
+  
+  cnv.width = gameWidth;
+  cnv.height = gameHeight;
+  
+  cnv.style.width = WIDTH + 'px';
+  cnv.style.height = HEIGHT + 'px';
+  
+  
+  gameContainer.style.width = WIDTH + 'px';
+  gameContainer.style.height = HEIGHT + 'px';
+  
+  canvasScale = WIDTH / gameWidth;
+  controlSetup({scaleTo: canvasScale});
 }
 
 function goFullScreen() {
@@ -54,7 +86,8 @@ function goFullScreen() {
 }
 
 // const {width, height} = cnv;
-let width, height;
+let gameWidth, gameHeight;
+let canvasScale;
 
 let mouseX, mouseY, pmouseX, pmouseY;
 
@@ -66,21 +99,22 @@ let chara;
 let platforms = [];
 
 function setup() {
-  width = cnv.width;
-  height = cnv.height;
+  gameWidth = 320;
+  gameHeight = 569;
   
-  controlSetup();
+  controlSetup({scaleTo: canvasScale});
+  resizeCanvas();
   
   joy = new Joystick();
   //joy.fixed = true;
   //joy.setLocation(60, height - 60);
  
-  jump = new GameButton('Jmp', width - 40, height - 66, 30);
+  jump = new GameButton('Jmp', gameWidth - 40, gameHeight - 66, 30);
   
   scene = new GameScene();
   
   chara = new GameCharacter(20, 20);
-  chara.put(30, height - 200);
+  chara.put(30, gameHeight - 200);
   scene.addCharacter(chara);
   
   platforms.push(new Platform(70, 280, 100, 20));
@@ -90,7 +124,7 @@ function setup() {
 }
 
 function touchDown(id, x, y, t) {
-  if (x < width * 0.67)
+  if (x < gameWidth * 0.67)
     joy.onDown(id, x, y);
     
   jump.onDown(id, x, y);
@@ -102,6 +136,10 @@ function touchMove(id, x, y, t) {
 }
 
 function touchUp(id, x, y, t) {
+  const scaling = cnv.width / gameWidth;
+  x *= scaling;
+  y *= scaling;
+  
   joy.onUp(id, x, y);
   jump.onUp(id, x, y);
 }
@@ -114,7 +152,7 @@ function animate(time) {
   runningFrame = requestAnimationFrame(animate);
   
   ctx.fillStyle = '#000000';
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(0, 0, gameWidth, gameHeight);
   
   ctx.fillStyle = 'white';
   ctx.fillText(joy.vx, 10, 10);
