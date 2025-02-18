@@ -2,17 +2,20 @@
 <html lang="en">
   <head>
     <title>Score</title>
+    <meta name="viewport" content="width=device-width, initial-scale=2, maximum-scale=1, user-scalable=no" />
     <style>
       :root{
         /* --clra: rgb(176,186,188); */
         --clra: rgb(191,191,191);
         --clrb: rgb(255,255,255);
         --light-on: rgb(255,255,255);
-        --mainbg: rgb(0,0,0);
+        --mainbg: rgb(53,53,53);
       }
       
       body {
         background-color: var(--mainbg);
+        margin: 0px;
+        overflow: hidden;
       }
       
       * {
@@ -20,6 +23,7 @@
       }
       
       #main {
+        position: absolute;
         display: none;
       }
       
@@ -30,22 +34,26 @@
         top: -1px;
         left: -1px;
         z-index: 1;
+        width: 100vw;
+        height: 100vh;
       }
       
       button#close {
         display: inherit;
         float: right;
         border: 1px solid black;
-        border-radius: 1.5em;
+        border-radius: 2em;
         background-color: var(--clra);
         color: var(--mainbg);
         position: absolute;
         right: 0px;
-        width: 24px;
-        height: 24px;
+        /* width: 36px; */
+        /* height: 36px; */
         margin-top: 10px;
         margin-right: 10px;
         z-index: 99;
+        padding: 1em 1em 1em 1em;
+        font: '32px Monospace';
         
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -125,7 +133,7 @@
   <body>
     <div id="main">
       <canvas id='cnv' width='320' height='520'></canvas>
-      <button id="close">×</button>
+      <button id="close">Close</button>
     </div>
     <!-- <div id="start-btn-container">
     </div> -->
